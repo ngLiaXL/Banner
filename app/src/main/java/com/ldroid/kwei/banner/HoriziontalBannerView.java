@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -226,6 +227,23 @@ public class HoriziontalBannerView extends LinearLayout {
 				}
 			}
 		}
+	}
+
+	//触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+
+		int action = ev.getAction();
+		if (action == MotionEvent.ACTION_UP||action == MotionEvent.ACTION_CANCEL||action == MotionEvent.ACTION_OUTSIDE) {
+			// 开始翻页
+			//if (canTurn)startTurning(autoTurningTime);
+			startFlipping();
+		} else if (action == MotionEvent.ACTION_DOWN) {
+			// 停止翻页
+			//if (canTurn)stopTurning();
+			stopFlipping();
+		}
+		return super.dispatchTouchEvent(ev);
 	}
 
 }
